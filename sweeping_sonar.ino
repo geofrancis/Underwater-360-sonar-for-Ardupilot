@@ -5,7 +5,7 @@
 #include <SoftwareSerial.h>
 
 #define POTI_PIN A0
-#define EXTERNAL_BAUDRATE 1500000
+#define EXTERNAL_BAUDRATE 500000
 
 int potiValue = 0;
 int FOV = 120; //multiple of res and even(res is 3 degree for the TF02-pro)
@@ -63,7 +63,7 @@ messageAngle = map(lidarAngle, -FOV/2, FOV/2, 0, FOV);
   
   if (lidarAngle <= -FOV/2) 
   {
- for (posi = 0; posi <= 180; posi += 1) { // goes from 0 degrees to 180 degrees
+ for (posi = 0; posi <= 90; posi += 1) { // goes from 0 degrees to 180 degrees
     // in steps of 1 degree
     myservo.write(posi);              // tell servo to go to position in variable 'pos'
     delay(15);                       // waits 15 ms for the servo to reach the position
@@ -72,7 +72,7 @@ messageAngle = map(lidarAngle, -FOV/2, FOV/2, 0, FOV);
 
   if (lidarAngle >= FOV/2)
   {
- for (posi = 180; posi >= 0; posi -= 1) { // goes from 180 degrees to 0 degrees
+ for (posi = 90; posi >= 0; posi -= 1) { // goes from 180 degrees to 0 degrees
     myservo.write(posi);              // tell servo to go to position in variable 'pos'
     delay(15);                       // waits 15 ms for the servo to reach the position
   }
@@ -105,7 +105,7 @@ void readsonar(){
       if (data_buffer[3] == CS) {
         range = 0.1 * (data_buffer[1] << 8) + data_buffer[2];
          //adjusting for the speed of sound in water
-        distance = range * 4.126;
+        tfDist = range;
       }
     }
   }
